@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blog_post.title }} · Блог о японской кухне</title>
+
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide иконки (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Наши статические файлы -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog-list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog-detail.css' %}">
+   </head>
+<body>
+    <!-- Header -->
+    {% include 'includes/header.html' %}
+
+    <main>
+        <div class="blog-detail">
+            <button class="back-button" onclick="window.location.href='{% url 'core:blog_list' %}'">
+                <i data-lucide="arrow-left" width="20" height="20"></i>
+                <span>Назад к блогу</span>
+            </button>
+            
+            <div class="blog-detail-header">
+                <h1 class="blog-detail-title">{{ blog_post.title }}</h1>
+                <div class="blog-detail-meta">
+                    <span><i data-lucide="calendar" width="16" height="16"></i> {{ blog_post.created_at|date:"d.m.Y" }}</span>
+                    <span><i data-lucide="clock" width="16" height="16"></i> {{ blog_post.reading_time }} мин чтения</span>
+                    <span><i data-lucide="user" width="16" height="16"></i> {{ blog_post.author|default:"Администратор" }}</span>
+                </div>
+            </div>
+            
+            {% if blog_post.get_image %}
+            <img src="{{ blog_post.get_image }}" alt="{{ blog_post.title }}" class="blog-detail-image">
+            {% endif %}
+            
+            <div class="blog-detail-content">
+                {{ blog_post.get_content_html|linebreaks }}
+            </div>
+            
+            {% if related_posts %}
+            <div class="related-posts">
+                <h3 class="related-title">Читайте также</h3>
+                <div class="related-grid">
+                    {% for post in related_posts %}
+                    <div class="related-card" onclick="window.location.href='{% url 'core:blog_detail' post.slug %}'">
+                        {% if post.get_image %}
+                        <img src="{{ post.get_image }}" alt="{{ post.title }}" class="related-image">
+                        {% endif %}
+                        <div class="related-content">
+                            <h4>{{ post.title }}</h4>
+                            <span class="blog-link">Читать →</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'includes/footer.html' %}
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Наверх">
+        <i data-lucide="arrow-up" width="24" height="24"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+            
+            // Back to top
+            const backToTop = document.getElementById('back-to-top');
+            if (backToTop) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 400) {
+                        backToTop.classList.remove('hidden');
+                    } else {
+                        backToTop.classList.add('hidden');
+                    }
+                });
+                
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

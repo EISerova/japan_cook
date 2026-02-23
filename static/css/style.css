@@ -1,0 +1,1442 @@
+/* ========== CSS ПЕРЕМЕННЫЕ ========== */
+:root {
+    /* Цветовая схема Earthy */
+    --color-bg: #F5EDE1;
+    --color-primary: #C17A5C;
+    --color-secondary: #8A9A7B;
+    --color-text: #704F3A;
+    --color-hover: #B8815F;
+    --color-white: #FFFFFF;
+    
+    /* Системные переменные */
+    --font-size: 16px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+    
+    /* Контейнер */
+    --container-max-width: 1300px;
+    --container-padding: 0 2rem;
+}
+
+/* Для страницы рецепта - более светлый фон */
+.recipe-detail-page {
+    --recipe-bg: #FFFBF5;
+    --recipe-text: #4A3526;
+    background-color: var(--recipe-bg);
+    min-height: 100vh;
+}
+
+/* ========== СБРОС И БАЗОВЫЕ СТИЛИ ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--font-size);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Comfortaa', cursive;
+    font-weight: 500;
+}
+
+p {
+    font-family: 'Nunito', sans-serif;
+}
+
+.font-comfortaa { font-family: 'Comfortaa', cursive; }
+.font-inter { font-family: 'Inter', sans-serif; }
+.font-nunito { font-family: 'Nunito', sans-serif; }
+
+/* ========== КОМПОНЕНТЫ ========== */
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: var(--container-padding);
+}
+
+/* Header */
+.top-header {
+    border-bottom: 1px solid rgba(193, 122, 92, 0.2);
+    background-color: white;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+    position: relative;
+}
+
+.logo {
+    width: 146px;
+    height: 69px;
+}
+
+.site-title {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 1.8rem;
+    color: var(--color-text);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    white-space: nowrap;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: opacity 0.2s;
+}
+
+.icon-button:hover {
+    opacity: 0.7;
+}
+
+.about-link {
+    font-family: 'Nunito', sans-serif;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.about-link:hover {
+    opacity: 0.7;
+}
+
+/* Sticky Navigation */
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    border-bottom: 1px solid rgba(193, 122, 92, 0.2);
+    box-shadow: var(--shadow-sm);
+    z-index: 50;
+}
+
+.nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 5rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25rem;
+    color: var(--color-text);
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    transition: opacity 0.2s;
+}
+
+.nav-item.active {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.nav-item:hover,
+.nav-link:hover {
+    opacity: 0.7;
+}
+
+.nav-link {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.social-icons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.social-icon {
+    width: 33px;
+    height: 33px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.social-icon:hover {
+    opacity: 1;
+}
+
+.social-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Main Content */
+main,
+.recipes-main,
+.recipe-main {
+    padding: 3rem 0;
+}
+
+.recipe-container {
+    max-width: 1000px;
+}
+
+.recipes-container {
+    max-width: 1300px;
+}
+
+/* Back Button */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
+    transition: opacity 0.2s;
+}
+
+.back-button:hover {
+    opacity: 0.7;
+}
+
+/* Featured Article */
+.featured-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 4rem;
+}
+
+.featured-text {
+    background-color: var(--color-primary);
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.featured-text h2 {
+    color: var(--color-bg);
+    margin-bottom: 1rem;
+}
+
+.featured-text p {
+    color: var(--color-bg);
+    font-family: 'Nunito', sans-serif;
+}
+
+.featured-image {
+    height: 364px;
+    overflow: hidden;
+    background-color: var(--color-secondary);
+}
+
+.featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Dishes Section */
+.dishes-section {
+    margin-bottom: 5rem;
+}
+
+.dishes-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.dishes-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.dishes-left h2 {
+    margin-bottom: 0.75rem;
+}
+
+.dishes-left p {
+    margin-bottom: 1.5rem;
+}
+
+/* Search (общие стили) */
+.search-container,
+.search-wrapper {
+    position: relative;
+    max-width: 600px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    padding-right: 3rem;
+    background-color: white;
+    border: 2px solid var(--color-secondary);
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: var(--color-text);
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(193, 122, 92, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-secondary);
+    width: 20px;
+    height: 20px;
+}
+
+/* Sushi Platter Card */
+.sushi-card {
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.sushi-image-container {
+    height: 320px;
+    overflow: hidden;
+    position: relative;
+}
+
+.sushi-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.sushi-card:hover .sushi-image {
+    transform: scale(1.05);
+}
+
+.gradient-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8rem;
+    background: linear-gradient(to bottom, transparent, rgba(245, 237, 225, 0.9));
+    pointer-events: none;
+}
+
+.sushi-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background-color: rgba(245, 237, 225, 0.85);
+}
+
+.sushi-overlay h3 {
+    margin-bottom: 0.5rem;
+}
+
+.sushi-overlay p {
+    margin-bottom: 0.75rem;
+    opacity: 0.8;
+}
+
+.view-button {
+    padding: 0.5rem 1.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.view-button:hover {
+    background-color: var(--color-hover);
+}
+
+/* Recipe Grids - общие стили */
+.recipes-grid {
+    margin-bottom: 3rem;
+}
+
+.recipes-grid h3 {
+    margin-bottom: 1.5rem;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+/* Recipes Grid - контейнер с заголовком */
+.recipes-grid {
+    margin-bottom: 3rem;
+}
+
+.recipes-grid h3 {
+    margin-bottom: 1.5rem;
+}
+
+/* Grid-3 - сетка для карточек рецептов */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+/* Recipe Card */
+.recipe-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.recipe-image-container,
+.recipe-image-wrapper {
+    height: 280px;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.recipe-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.recipe-card:hover .recipe-image {
+    transform: scale(1.05);
+}
+
+.recipe-card h4,
+.recipe-card-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+}
+
+.recipe-category {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.recipe-meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin-bottom: 0.75rem;
+}
+
+.recipe-link,
+.recipe-view-btn {
+    background: none;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s;
+}
+
+.recipe-link:hover,
+.recipe-view-btn:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+/* Ingredients Section */
+.ingredients-section {
+    margin-bottom: 3rem;
+}
+
+.ingredients-section h3 {
+    margin-bottom: 1.5rem;
+}
+
+.ingredients-grid {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ingredient-tag {
+    background-color: var(--color-secondary);
+    color: white;
+    padding: 0.75rem 2.5rem;
+    font-family: 'Nunito', sans-serif;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: box-shadow 0.2s;
+}
+
+.ingredient-tag:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Collections Section */
+.collections-section {
+    margin-bottom: 3rem;
+}
+
+.collections-section h3 {
+    margin-bottom: 1.5rem;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.collection-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.collection-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.collection-image-container {
+    height: 186px;
+    overflow: hidden;
+    background-color: var(--color-secondary);
+}
+
+.collection-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.collection-card:hover .collection-image {
+    transform: scale(1.05);
+}
+
+.collection-title {
+    background-color: var(--color-secondary);
+    color: var(--color-bg);
+    padding: 0.75rem 1.5rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s;
+}
+
+/* Blog Section - обновленные стили */
+.blog-section {
+    margin-bottom: 5rem;
+}
+
+.blog-section h2 {
+    margin-bottom: 2rem;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.blog-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 0 1rem 0; /* Добавлен нижний отступ как у recipe-card */
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.blog-image-container {
+    height: 240px; /* Увеличил высоту как в blog.css */
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.blog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.blog-card:hover .blog-image {
+    transform: scale(1.05);
+}
+
+.blog-content {
+    padding: 0 1rem; /* Отступы как у recipe-card */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    font-family: 'Nunito', sans-serif;
+}
+
+.blog-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.blog-card h3 {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.25rem; /* Как у recipe-card */
+    color: var(--color-text);
+    margin: 0 0 0.5rem 0;
+    min-height: 3.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+}
+
+.blog-description {
+    font-family: 'Nunito', sans-serif;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    font-size: 0.95rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Стиль кнопки "Читать далее" - такой же как у recipe-link */
+.blog-link {
+    /* margin: 0 1rem 0 1rem; */
+    background: none;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: 0.5rem 0;
+    text-align: left;
+    transition: opacity 0.2s;
+    align-self: flex-start;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.blog-link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+    gap: 8px;
+}
+
+/* Page Header (для страницы списка рецептов) */
+.page-header {
+    margin-bottom: 3rem;
+}
+
+.page-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 2.5rem;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+}
+
+.page-description {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* Filter Tags */
+.filter-tags {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+
+.filter-tag {
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    background-color: var(--color-secondary);
+    color: var(--color-bg);
+}
+
+.filter-tag:hover {
+    opacity: 0.8;
+}
+
+.filter-tag.active {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-weight: 600;
+}
+
+/* Load More Button */
+.load-more {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.load-more-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    background-color: var(--color-secondary);
+    color: var(--color-bg);
+}
+
+.load-more-btn:hover {
+    opacity: 0.8;
+}
+
+/* Recipe Title (для страницы рецепта) */
+.recipe-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 2.5rem;
+    color: var(--recipe-text);
+    margin-bottom: 1.5rem;
+}
+
+/* Recipe Meta */
+.recipe-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.875rem;
+    color: var(--recipe-text);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.meta-icon {
+    color: var(--color-secondary);
+}
+
+.meta-text {
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* Recipe Main Image */
+.recipe-main-image {
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.recipe-main-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* Share Section */
+.share-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(193, 122, 92, 0.2);
+}
+
+.share-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.share-label {
+    font-family: 'Nunito', sans-serif;
+    color: var(--recipe-text);
+}
+
+.share-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.share-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+.share-button:hover {
+    opacity: 0.7;
+}
+
+/* Description */
+.recipe-description {
+    margin-bottom: 3rem;
+}
+
+.recipe-description p {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--recipe-text);
+}
+
+/* Two Column Layout */
+.recipe-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.column-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.5rem;
+    color: var(--recipe-text);
+    margin-bottom: 1.5rem;
+}
+
+/* Ingredients List */
+.ingredients-list {
+    list-style: none;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    color: var(--recipe-text);
+}
+
+.ingredient-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.ingredient-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    margin-top: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Steps List */
+.steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.step-item {
+    display: flex;
+    gap: 1rem;
+}
+
+.step-number {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    flex-shrink: 0;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.step-text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--recipe-text);
+    padding-top: 0.125rem;
+}
+
+/* Step Images Section */
+.step-images-section {
+    margin-bottom: 3rem;
+}
+
+.section-subtitle {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.3rem;
+    color: var(--recipe-text);
+    margin-bottom: 1.5rem;
+}
+
+.step-images-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.step-image-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.step-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.step-image-number {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+/* Video Section */
+.video-section {
+    margin-bottom: 3rem;
+}
+
+.video-container {
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--color-secondary);
+}
+
+.video-placeholder {
+    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.125);
+}
+
+.video-play-button {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.video-play-button:hover {
+    background-color: var(--color-hover);
+}
+
+.video-text {
+    font-family: 'Nunito', sans-serif;
+    color: var(--recipe-text);
+}
+
+/* Categories Section */
+.categories-section {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(193, 122, 92, 0.2);
+}
+
+.categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.category-tag {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    background-color: var(--color-secondary);
+    color: var(--color-bg);
+}
+
+.category-tag:hover {
+    opacity: 0.8;
+}
+
+/* Footer */
+footer {
+    background-color: var(--color-primary);
+    padding: 2rem 0;
+    margin-top: 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.footer-social {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-social-icon {
+    width: 28px;
+    height: 28px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.footer-social-icon:hover {
+    opacity: 1;
+}
+
+.footer-social-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.footer-text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.875rem;
+    color: var(--color-bg);
+}
+
+.footer-contact {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.875rem;
+    color: var(--color-bg);
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    padding: 1rem;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.2s;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-to-top:hover {
+    background-color: var(--color-hover);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--color-primary);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+}
+
+/* Загрузчик */
+.loader {
+    border: 3px solid var(--color-bg);
+    border-top: 3px solid var(--color-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+}
+
+/* Accessibility Mode */
+body.accessible-mode {
+    --color-bg: #FFFFFF;
+    --color-text: #000000;
+    --color-primary: #0066CC;
+    --color-secondary: #2D4B2D;
+    --color-hover: #004999;
+    --recipe-bg: #FFFFFF;
+    --recipe-text: #000000;
+}
+
+body.accessible-mode .featured-text,
+body.accessible-mode footer,
+body.accessible-mode .view-button,
+body.accessible-mode .ingredient-tag,
+body.accessible-mode .collection-title,
+body.accessible-mode .back-to-top,
+body.accessible-mode .recipe-card,
+body.accessible-mode .blog-card,
+body.accessible-mode .collection-card,
+body.accessible-mode .share-button,
+body.accessible-mode .step-number,
+body.accessible-mode .step-image-number,
+body.accessible-mode .category-tag,
+body.accessible-mode .filter-tag,
+body.accessible-mode .recipe-category,
+body.accessible-mode .load-more-btn {
+    filter: contrast(1.2);
+    border: 2px solid #000;
+}
+
+body.accessible-mode button {
+    border: 2px solid #000;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none !important;
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 1024px) {
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .site-title {
+        position: static;
+        transform: none;
+        margin-bottom: 0.5rem;
+    }
+    
+    .nav-menu {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dishes-header {
+        grid-template-columns: 1fr;
+    }
+    
+    .recipe-columns {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .step-images-grid,
+    .grid-3,
+    .grid-4,
+    .blog-grid,
+    .footer-content,
+    .recipes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ingredient-tag {
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .footer-content {
+        text-align: center;
+    }
+    
+    .recipe-meta {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .page-title,
+    .recipe-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-title {
+        font-size: 1.4rem;
+    }
+    
+    .featured-text {
+        padding: 2rem 1rem;
+    }
+    
+    .sushi-overlay {
+        padding: 1rem;
+    }
+    
+    .sushi-overlay h3 {
+        font-size: 1.1rem;
+    }
+    
+    .share-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .step-image {
+        height: 180px;
+    }
+    
+    .recipe-image-container,
+    .recipe-image-wrapper {
+        height: 220px;
+    }
+    
+    .filter-tags {
+        justify-content: center;
+    }
+    
+    .back-to-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        padding: 0.75rem;
+    }
+}
+
+/* ========== ИСПРАВЛЕНИЯ ДЛЯ КАРТОЧЕК РЕЦЕПТОВ НА ГЛАВНОЙ ========== */
+
+/* Сетка для новых рецептов */
+.recipes-grid .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    align-items: stretch;
+}
+
+/* Карточка рецепта */
+.recipes-grid .recipe-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0 0 1rem 0; /* Добавлен нижний отступ */
+}
+
+.recipes-grid .recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Контейнер изображения - фиксированная высота */
+.recipes-grid .recipe-image-container {
+    height: 200px;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.recipes-grid .recipe-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.recipes-grid .recipe-card:hover .recipe-image {
+    transform: scale(1.05);
+}
+
+/* Заголовок рецепта - с отступами */
+.recipes-grid .recipe-card h4 {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin: 0 1rem 0.5rem 1rem; /* Отступы слева и справа */
+    min-height: 3.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+}
+
+/* Кнопка "View recipe" - с отступами */
+.recipes-grid .recipe-link {
+    margin: 0 1rem 0 1rem; /* Отступы слева и справа, margin-top: auto все еще работает */
+    background: none;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: 0.5rem 0;
+    text-align: left;
+    transition: opacity 0.2s;
+    align-self: flex-start;
+}
+
+.recipes-grid .recipe-link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .recipes-grid .grid-3 {
+        grid-template-columns: 1fr;
+    }
+    
+    .recipes-grid .recipe-image-container {
+        height: 220px;
+    }
+    
+    .recipes-grid .recipe-card h4 {
+        min-height: auto;
+    }
+}

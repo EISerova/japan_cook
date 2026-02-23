@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рецепты с ингредиентом {{ ingredient.name }} · Японская кухня</title>
+
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide иконки (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Наши статические файлы -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/recipes-list.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    {% include 'includes/header.html' %}
+
+    <!-- Main Content -->
+    <main class="recipes-main">
+        <div class="container recipes-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h3 class="page-title">Рецепты с ингредиентом: {{ ingredient.name }}</h3>
+                <p class="page-description">Найдено рецептов: {{ recipes.count }}</p>
+
+                <!-- Back Button -->
+                <button class="back-button" id="back-button" onclick="window.location.href='/'">
+                    <i data-lucide="arrow-left" width="20" height="20"></i>
+                    <span>На главную</span>
+                </button>
+            </div>
+
+            <!-- Recipe Grid -->
+            <div class="recipes-grid" id="recipes-grid">
+                <!-- Рецепты будут добавлены через JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'includes/footer.html' %}
+
+    <!-- Данные из Django для JavaScript -->
+    <script>
+        window.recipesData = {{ recipes_json|safe }};
+    </script>
+    
+    <!-- Подключаем JS для страницы списка рецептов -->
+    <script src="{% static 'js/recipes-list.js' %}"></script>
+</body>
+</html>
