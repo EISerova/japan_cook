@@ -1,0 +1,113 @@
+.dashboard #content {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard .module {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.dashboard .module table {
+    width: 100%;
+}
+
+.dashboard .module caption {
+    background: var(--color-primary);
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px 8px 0 0;
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.1em;
+}
+
+.dashboard .module a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.dashboard .module a:hover {
+    color: var(--color-hover);
+    text-decoration: underline;
+}
+
+.dashboard .module th, .dashboard .module td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.stat-card .stat-number {
+    font-size: 2.5em;
+    font-weight: 600;
+    color: var(--color-primary);
+    font-family: 'Comfortaa', cursive;
+    line-height: 1.2;
+}
+
+.stat-card .stat-label {
+    color: var(--color-text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+}
+
+.stat-card .stat-icon {
+    margin-bottom: 10px;
+}
+
+.stat-card .stat-icon svg {
+    width: 40px;
+    height: 40px;
+    color: var(--color-secondary);
+}
+
+.recent-actions {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.recent-actions h2 {
+    font-family: 'Comfortaa', cursive;
+    color: var(--color-text);
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.recent-actions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-actions li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-family: 'Nunito', sans-serif;
+}
+
+.recent-actions li:last-child {
+    border-bottom: none;
+}
+
+.recent-actions .action-time {
+    color: #999;
+    font-size: 0.85em;
+    margin-left: 10px;
+}

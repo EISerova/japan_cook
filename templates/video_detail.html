@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ video.title }} · Видео-рецепт{% endblock %}
+
+{% block meta_description %}
+Видео-рецепт: {{ video.title }}. 
+{% if video.duration %}Длительность: {{ video.duration }}.{% endif %}
+Пошаговое приготовление с комментариями.
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/video-list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-detail-page">
+    <div class="video-detail-container">
+        <!-- Header -->
+        <div class="video-detail-header">
+            <button class="back-button" onclick="window.location.href='{% url 'core:video_list' %}'">
+                <i data-lucide="arrow-left" width="20" height="20"></i>
+                <span>К списку видео</span>
+            </button>
+            <h1 class="page-title">{{ video.title }}</h1>
+        </div>
+
+        <!-- Видео плеер -->
+        <div class="video-detail-wrapper">
+            {{ video.get_embed_html|safe }}
+        </div>
+
+        <!-- Связанный рецепт (без блока) -->
+        {% if video.recipe %}
+        <div style="margin: 2rem 0;">
+            <h2 style="font-family: 'Comfortaa', cursive; font-size: 1.5rem; margin-bottom: 1rem;">Рецепт из видео</h2>
+            <a href="{% url 'core:recipe_detail' video.recipe.slug %}" style="display: flex; align-items: center; gap: 1.5rem; text-decoration: none; color: inherit; padding: 0;">
+                <div style="width: 120px; height: 120px; border-radius: 8px; overflow: hidden; flex-shrink: 0;">
+                    <img src="{% if video.recipe.image %}{{ video.recipe.image.url }}{% elif video.recipe.image_url %}{{ video.recipe.image_url }}{% else %}{% static 'images/placeholder.jpg' %}{% endif %}" 
+                        alt="{{ video.recipe.title }}" 
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="flex-grow: 1;">
+                    <h3 style="font-family: 'Comfortaa', cursive; font-size: 1.3rem; color: var(--color-text); margin: 0 0 0.5rem 0;">{{ video.recipe.title }}</h3>
+                    <p style="font-family: 'Nunito', sans-serif; font-size: 0.95rem; color: var(--color-text-light); margin: 0 0 0.5rem 0;">{{ video.recipe.description|truncatechars:150 }}</p>
+                    <span style="display: inline-flex; align-items: center; gap: 4px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; color: var(--color-primary);">
+                        Перейти к рецепту →
+                    </span>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Похожие видео -->
+        {% if related_videos %}
+        <div class="related-posts">
+            <h3 class="related-title">Другие видео</h3>
+            <div class="related-grid">
+                {% for related in related_videos %}
+                <div class="related-card" onclick="window.location.href='{% url 'core:video_detail' related.id %}'">
+                    <div class="video-thumb">
+                        {% if related.recipe %}
+                        <img src="{% if related.recipe.image %}{{ related.recipe.image.url }}{% elif related.recipe.image_url %}{{ related.recipe.image_url }}{% else %}{% static 'images/placeholder.jpg' %}{% endif %}" 
+                             alt="{{ related.title }}" 
+                             loading="lazy">
+                        {% endif %}
+                        <div class="play-overlay">
+                            <div class="play-button">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        {% if related.duration %}
+                        <div class="duration-badge">{{ related.duration }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="video-info">
+                        <h4>{{ related.title|truncatechars:50 }}</h4>
+                        <span class="watch-link">Смотреть →</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

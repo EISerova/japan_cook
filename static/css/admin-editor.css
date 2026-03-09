@@ -361,3 +361,81 @@
     border-color: #505050;
     color: #e0e0e0;
 }
+
+/* Точный селектор для legend внутри fieldset */
+#recipe_form > div > fieldset:nth-child(1) > div.form-row.field-image > fieldset > legend {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #000000 !important;
+}
+
+/* Более простой селектор */
+.form-row.field-image fieldset legend {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #000000 !important;
+}
+
+/* Самый простой */
+fieldset legend {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #000000 !important;
+}
+
+/* Стили для таблиц в предпросмотре */
+.preview-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'Nunito', sans-serif;
+    border: 1px solid #dee2e6;
+}
+
+.preview-content th,
+.preview-content td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+    vertical-align: top;
+}
+
+.preview-content th {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 600;
+    font-family: 'Comfortaa', cursive;
+}
+
+.preview-content tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.preview-content tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Для темной темы */
+.dark .preview-content table {
+    border-color: #404040;
+}
+
+.dark .preview-content th,
+.dark .preview-content td {
+    border-color: #404040;
+}
+
+.dark .preview-content th {
+    background-color: #C17A5C;
+}
+
+.dark .preview-content tr:nth-child(even) {
+    background-color: #2b2b2b;
+}
+
+.dark .preview-content tr:hover {
+    background-color: #363636;
+}

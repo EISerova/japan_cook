@@ -1,0 +1,135 @@
+{% extends "admin/admin-index.html" %}
+{% load static i18n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin-index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    {% if app_list %}
+        <!-- Статистика -->
+        <div class="stat-cards">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 016.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"></path>
+                    </svg>
+                </div>
+                <div class="stat-number">{{ recipe_count|default:"0" }}</div>
+                <div class="stat-label">Рецептов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4"></path>
+                        <path d="M12 8h.01"></path>
+                    </svg>
+                </div>
+                <div class="stat-number">{{ blog_count|default:"0" }}</div>
+                <div class="stat-label">Статей в блоге</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 16l6-6 6 6 6-6 6 6"></path>
+                    </svg>
+                </div>
+                <div class="stat-number">{{ inspiration_count|default:"0" }}</div>
+                <div class="stat-label">Вдохновения</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="20" rx="2.18"></rect>
+                        <path d="M7 2v20"></path>
+                        <path d="M17 2v20"></path>
+                        <path d="M2 12h20"></path>
+                        <path d="M2 7h5"></path>
+                        <path d="M2 17h5"></path>
+                        <path d="M17 17h5"></path>
+                        <path d="M17 7h5"></path>
+                    </svg>
+                </div>
+                <div class="stat-number">{{ collection_count|default:"0" }}</div>
+                <div class="stat-label">Коллекций</div>
+            </div>
+        </div>
+    
+        {% for app in app_list %}
+            <div class="module">
+                <table>
+                    <caption>
+                        <a href="{{ app.app_url }}" class="section">{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}</a>
+                    </caption>
+                    {% for model in app.models %}
+                        <tr class="model-{{ model.object_name|lower }}">
+                            {% if model.admin_url %}
+                                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+                            {% else %}
+                                <th scope="row">{{ model.name }}</th>
+                            {% endif %}
+
+                            {% if model.add_url %}
+                                <td><a href="{{ model.add_url }}" class="addlink">{% translate 'Add' %}</a></td>
+                            {% else %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+
+                            {% if model.admin_url and show_changelinks %}
+                                {% if model.view_only %}
+                                    <td><a href="{{ model.admin_url }}" class="viewlink">{% translate 'View' %}</a></td>
+                                {% else %}
+                                    <td><a href="{{ model.admin_url }}" class="changelink">{% translate 'Change' %}</a></td>
+                                {% endif %}
+                            {% elif show_changelinks %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+    {% endif %}
+</div>
+
+<div class="recent-actions" style="margin-top: 30px;">
+    <h2>{% translate 'Recent actions' %}</h2>
+    <h3>{% translate 'My actions' %}</h3>
+    {% load log %}
+    {% get_admin_log 10 as admin_log for_user user %}
+    {% if not admin_log %}
+        <p>{% translate 'None available' %}</p>
+    {% else %}
+        <ul>
+        {% for entry in admin_log %}
+            <li>
+                <span class="action-time">{{ entry.action_time|date:"d.m.Y H:i" }}</span>
+                <span class="action-content">
+                    {% if entry.is_deletion or not entry.get_admin_url %}
+                        {{ entry.object_repr }}
+                    {% else %}
+                        <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                    {% endif %}
+                    <br>
+                    {% if entry.content_type %}
+                        <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                    {% else %}
+                        <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                    {% endif %}
+                </span>
+                <br>
+                <span class="action-type" style="color: {% if entry.is_addition %}green{% elif entry.is_change %}orange{% else %}red{% endif %};">
+                    {% if entry.is_addition %}+ добавление{% elif entry.is_change %}✎ изменение{% else %}- удаление{% endif %}
+                </span>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

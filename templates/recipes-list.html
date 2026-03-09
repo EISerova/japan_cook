@@ -1,70 +1,83 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Все рецепты · Японская кухня</title>
 
-    <!-- Шрифты -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide иконки (CDN) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Наши статические файлы -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/recipes-list.css' %}">
-</head>
-<body>
-    <!-- Header -->
-    {% include 'includes/header.html' %}
+{% block title %}Все рецепты японской кухни · Пошаговые рецепты с фото{% endblock %}
 
-    <!-- Main Content -->
-    <main class="recipes-main">
-        <div class="container recipes-container">
-            <!-- Page Header -->
-            <div class="page-header">
-                <h3 class="page-title">Все рецепты</h3>
-                <p class="page-description">Откройте для себя нашу коллекцию аутентичных японских блюд</p>
+{% block meta_description %}
+Коллекция аутентичных японских рецептов: от классических суши до домашнего ужина в японском стиле. 
+Простые и понятные рецепты с фото и подробными инструкциями.
+{% endblock %}
 
-                <!-- Search Bar -->
-                <div class="search-wrapper">
-                    <input type="text" class="search-input" placeholder="Поиск рецептов...">
-                    <i data-lucide="search" class="search-icon" width="20" height="20"></i>
-                </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/recipes-list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="recipes-main">
+    <div class="container recipes-container">
+        <!-- Page Header -->
+        <div class="inspiration-header">
+            <button class="back-button" onclick="window.location.href='/'">
+                <i data-lucide="arrow-left" width="20" height="20"></i>
+                <span>На главную</span>
+            </button>
+            
+            <h1 class="page-title">
+                {% if ingredient %}
+                    Рецепты с ингредиентом: {{ ingredient.name }}
+                {% else %}
+                    Все рецепты
+                {% endif %}
+            </h1>
+            
+            <p class="page-description">
+                {% if ingredient %}
+                    Найдено рецептов: {{ recipes.count }}
+                {% else %}
+                    Откройте для себя нашу коллекцию аутентичных японских блюд
+                {% endif %}
+            </p>
+
+            <!-- Search Bar (только для всех рецептов) -->
+            {% if not ingredient %}
+            <div style="display: flex; justify-content: center; width: 100%;">
+                {% include 'includes/search.html' %}
             </div>
-
-            <!-- Filter Tags -->
-            <div class="filter-tags">
-                <button class="filter-tag active">Все рецепты</button>
-                <button class="filter-tag">Основные блюда</button>
-                <button class="filter-tag">Супы</button>
-                <button class="filter-tag">Закуски</button>
-            </div>
-
-            <!-- Recipe Grid -->
-            <div class="recipes-grid" id="recipes-grid">
-                <!-- Рецепты будут добавлены через JS -->
-            </div>
-
-            <!-- Load More Button -->
-            <div class="load-more">
-                <button class="load-more-btn" id="load-more">Загрузить еще</button>
-            </div>
+            {% endif %}
         </div>
-    </main>
 
-    <!-- Footer -->
-    {% include 'includes/footer.html' %}
+        <!-- Filter Tags (только для всех рецептов) -->
+        {% if not ingredient %}
+        <div class="filter-tags" id="filter-tags">
+            <button class="filter-tag active" data-filter="all">Все рецепты</button>
+            {% for collection in collections %}
+            <button class="filter-tag" data-filter="{{ collection.slug }}">{{ collection.name }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-    <script>
-        window.recipesData = {{ recipes_json|safe }};
-    </script>
+        <!-- Recipe Grid -->
+        <div class="recipes-grid" id="recipes-grid"></div>
 
-    <!-- Подключаем JS для страницы списка рецептов -->
-    <script src="{% static 'js/recipes-list.js' %}"></script>
-</body>
-</html>
+        <!-- Load More Button (только для всех рецептов) -->
+        {% if not ingredient %}
+        <div class="load-more">
+            <button class="load-more-btn" id="load-more">Загрузить еще</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block page_data %}
+<script>
+    window.recipesData = {{ recipes_json|safe }};
+    {% if not ingredient %}
+    window.collections = {{ collections_json|safe }};
+    {% endif %}
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/recipes-list.js' %}"></script>
+{% endblock %}

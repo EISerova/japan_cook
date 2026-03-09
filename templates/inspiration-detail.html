@@ -1,78 +1,37 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ inspiration.title }} · Вдохновение</title>
 
-    <!-- Шрифты -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide иконки (CDN) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Наши статические файлы -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/inspiration.css' %}">
-</head>
-<body>
-    <!-- Header -->
-    {% include 'includes/header.html' %}
+{% block title %}{{ inspiration.title }} · Вдохновение Японией{% endblock %}
 
-    <main>
-        <div class="inspiration-detail">
-            <button class="back-button" onclick="window.location.href='{% url 'core:inspiration_list' %}'">
-                <i data-lucide="arrow-left" width="20" height="20"></i>
-                <span>Назад к вдохновению</span>
-            </button>
-            
-            <div class="inspiration-detail-header">
-                <h1 class="inspiration-detail-title">{{ inspiration.title }}</h1>
-                <div class="inspiration-detail-meta">
-                    <span><i data-lucide="calendar" width="16" height="16"></i> {{ inspiration.created_at|date:"d.m.Y" }}</span>
-                </div>
-            </div>
-            
-            <div class="inspiration-detail-image-container">
-                <img src="{{ inspiration.get_image }}" alt="{{ inspiration.title }}" class="inspiration-detail-image">
-            </div>
-            
-            <div class="inspiration-detail-content">
-                <p>{{ inspiration.description|linebreaks }}</p>
-            </div>
-        </div>
-    </main>
+{% block meta_description %}
+{{ inspiration.description|truncatechars:160 }}
+Погрузитесь в эстетику японской культуры через фотографии и истории.
+{% endblock %}
 
-    <!-- Footer -->
-    {% include 'includes/footer.html' %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/inspiration.css' %}">
+{% endblock %}
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="back-to-top" aria-label="Наверх">
-        <i data-lucide="arrow-up" width="24" height="24"></i>
+{% block content %}
+<div class="inspiration-detail">
+    <button class="back-button" onclick="window.location.href='{% url 'core:inspiration_list' %}'">
+        <i data-lucide="arrow-left" width="20" height="20"></i>
+        <span>Назад к вдохновению</span>
     </button>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-            
-            const backToTop = document.getElementById('back-to-top');
-            if (backToTop) {
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 400) {
-                        backToTop.classList.remove('hidden');
-                    } else {
-                        backToTop.classList.add('hidden');
-                    }
-                });
-                
-                backToTop.addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+    
+    <div class="inspiration-detail-header">
+        <h1 class="inspiration-detail-title">{{ inspiration.title }}</h1>
+        <div class="inspiration-detail-meta">
+            <span><i data-lucide="calendar" width="16" height="16"></i> {{ inspiration.created_at|date:"d.m.Y" }}</span>
+        </div>
+    </div>
+    
+    <div class="inspiration-detail-image-container">
+        <img src="{{ inspiration.get_image }}" alt="{{ inspiration.title }}" class="inspiration-detail-image">
+    </div>
+    
+    <div class="inspiration-detail-content">
+        <p>{{ inspiration.description|linebreaks }}</p>
+    </div>
+</div>
+{% endblock %}

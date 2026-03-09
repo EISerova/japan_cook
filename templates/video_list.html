@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Видео-рецепты японской кухни · Учитесь готовить с нами{% endblock %}
+
+{% block meta_description %}
+Коллекция видео-уроков по приготовлению японских блюд: суши, рамен, темпура и многое другое. 
+Наглядные инструкции от профессиональных поваров.
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/video-list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="videos-page">
+    <div class="videos-container">
+        <div class="videos-header">
+            <button class="back-button" onclick="window.location.href='/'">
+                <i data-lucide="arrow-left" width="20" height="20"></i>
+                <span>На главную</span>
+            </button>
+            <h1 class="page-title">Видео рецепты</h1>
+            <p class="page-description">Учитесь готовить японские блюда с нашими подробными видео-уроками</p>
+
+            <!-- Search Bar -->
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="Поиск видео...">
+                <i data-lucide="search" class="search-icon" width="20" height="20"></i>
+            </div>
+        </div>
+
+        <!-- Videos Grid -->
+        <div class="video-grid" id="videos-grid">
+            <!-- Видео будут загружаться через JS -->
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more-container">
+            <button class="load-more-btn" id="load-more">Загрузить еще</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_data %}
+<script>
+    window.videosData = {{ videos_json|safe }};
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/videos.js' %}"></script>
+{% endblock %}

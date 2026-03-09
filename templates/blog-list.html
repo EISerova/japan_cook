@@ -1,66 +1,49 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Блог о японской кухне · Статьи и рецепты</title>
 
-    <!-- Шрифты -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide иконки (CDN) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Наши статические файлы -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/blog-list.css' %}">
-</head>
-<body>
-    <!-- Header -->
-    {% include 'includes/header.html' %}
+{% block title %}Блог о японской кухне · Статьи, традиции, секреты{% endblock %}
 
-    <!-- Main Content -->
-    <main class="blog-page">
-        <div class="blog-container">
-            <!-- Page Header -->
-            <div class="blog-header">
-                <button class="back-button" onclick="window.location.href='/'">
-                    <i data-lucide="arrow-left" width="20" height="20"></i>
-                    <span>На главную</span>
-                </button>
-                <h1 class="page-title">Последние записи блога</h1>
-                <p class="page-description">Статьи о японской кухне, традициях и секретах приготовления</p>
-            </div>
+{% block meta_description %}
+Интересные статьи о японской кулинарии: традиции васо́ку, секреты идеального риса, 
+философия приготовления и обзоры японских продуктов.
+{% endblock %}
 
-            <!-- Blog Posts Grid -->
-            <div class="blog-grid" id="blog-grid">
-                <!-- Посты будут загружаться через JS -->
-            </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/blog-list.css' %}">
+{% endblock %}
 
-            <!-- Load More Button -->
-            <div class="load-more-container">
-                <button class="load-more-btn" id="load-more">Загрузить еще</button>
-            </div>
+{% block content %}
+<div class="blog-page">
+    <div class="blog-container">
+        <!-- Page Header -->
+        <div class="blog-header">
+            <button class="back-button" onclick="window.location.href='/'">
+                <i data-lucide="arrow-left" width="20" height="20"></i>
+                <span>На главную</span>
+            </button>
+            <h1 class="page-title">Последние записи блога</h1>
+            <p class="page-description">Статьи о японской кухне, традициях и секретах приготовления</p>
         </div>
-    </main>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="back-to-top" aria-label="Наверх">
-        <i data-lucide="arrow-up" width="24" height="24"></i>
-    </button>
+        <!-- Blog Posts Grid -->
+        <div class="blog-grid" id="blog-grid">
+            <!-- Посты будут загружаться через JS -->
+        </div>
 
-    <!-- Footer -->
-    {% include 'includes/footer.html' %}
+        <!-- Load More Button -->
+        <div class="load-more-container">
+            <button class="load-more-btn" id="load-more">Загрузить еще</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    <!-- Данные из Django для JavaScript -->
-    <script>
-        window.blogPostsData = {{ blog_posts_json|safe }};
-    </script>
-    
-    <!-- Подключаем JS для блога -->
-    <script src="{% static 'js/blog.js' %}"></script>
-</body>
-</html>
+{% block page_data %}
+<script>
+    window.blogPostsData = {{ blog_posts_json|safe }};
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/blog.js' %}"></script>
+{% endblock %}

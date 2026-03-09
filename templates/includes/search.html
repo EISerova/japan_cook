@@ -1,0 +1,10 @@
+{% load static %}
+
+<div class="search-container">
+    <form method="get" action="{% url 'core:search' %}" class="search-wrapper">
+        <input type="text" name="q" class="search-input" placeholder="Поиск..." value="{{ request.GET.q }}">
+        <button type="submit" class="search-icon" style="background: none; border: none; cursor: pointer;">
+            <i data-lucide="search" width="20" height="20"></i>
+        </button>
+    </form>
+</div>

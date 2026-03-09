@@ -4,7 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Японская кузина. Сайт о японской кухне</title>
+    <title>{% block title %}Японская кузина. Сайт о японской кухне{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Японская кухня: рецепты, видео, статьи о традициях и секретах приготовления. Откройте для себя мир японской кулинарии!{% endblock %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/logo.svg' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/logo.svg' %}">
 
     <!-- Шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,141 +22,52 @@
     
     <!-- Наши статические файлы -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <!-- КОНТЕЙНЕР ДЛЯ ОСНОВНОЙ СТРАНИЦЫ -->
-    <div id="main-page">
-        <!-- Header -->
-        {% include 'includes/header.html' %}
+<body class="{% block body_class %}{% endblock %}">
+    <!-- Header -->
+    {% include 'includes/header.html' %}
 
-        <!-- Main Content -->
-        <main>
-            <div class="container">
-                <!-- Featured Article Section - Вдохновение -->
-                <section class="featured-grid">
-                    {% if latest_inspiration %}
-                    <div class="featured-text" onclick="window.location.href='{% url 'core:inspiration_detail' latest_inspiration.slug %}'" style="cursor: pointer;">
-                        <div>
-                            <h2>{{ latest_inspiration.title }}</h2>
-                            <p>{{ latest_inspiration.description|truncatechars:100 }}</p>
-                            <button class="view-button" style="margin-top: 1rem;" onclick="event.stopPropagation(); window.location.href='{% url 'core:inspiration_detail' latest_inspiration.slug %}'">Читать далее →</button>
-                        </div>
-                    </div>
-                    <div class="featured-image">
-                        <img src="{{ latest_inspiration.get_image }}" alt="{{ latest_inspiration.title }}">
-                    </div>
-                    {% else %}
-                    <div class="featured-text">
-                        <div>
-                            <h2>Вдохновение</h2>
-                            <p>Откройте для себя красоту японской культуры</p>
-                        </div>
-                    </div>
-                    <div class="featured-image">
-                        <img src="https://images.unsplash.com/photo-1678312546873-61495b72a76f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqYXBhbmVzZSUyMGN1aXNpbmUlMjB0YWJsZXxlbnwxfHx8fDE3NjczMzkyNTF8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Japanese Cuisine">
-                    </div>
-                    {% endif %}
-                </section>
-                <!-- Dishes Section -->
-                <section class="dishes-section">
-                    <!-- Japanese Cuisine Dishes Header with Search -->
-                    <div class="dishes-header">
-                        <div class="dishes-left">
-                            <div>
-                                <h2>Искусство японской кухни</h2>
-                                <p>Откройте для себя тонкий баланс вкусов и техник, благодаря которому японская кухня стала одной из самых уважаемых кулинарных традиций в мире.</p>
-                            </div>
-                            <div class="search-container">
-                                <input type="text" class="search-input" placeholder="Search recipes...">
-                                <i data-lucide="search" class="search-icon" width="20" height="20"></i>
-                            </div>
-                        </div>
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-                        <!-- Featured Recipe Section (бывший Artisan Sushi Platter) -->
-                        {% if featured_recipe %}
-                        <div class="sushi-card" id="sushi-card" data-recipe-slug="{{ featured_recipe.slug }}">
-                            <div class="sushi-image-container">
-                                <img src="{% if featured_recipe.image %}{{ featured_recipe.image.url }}{% else %}{{ featured_recipe.image_url }}{% endif %}" 
-                                    alt="{{ featured_recipe.title }}" class="sushi-image">
-                                <div class="gradient-overlay"></div>
-                                <div class="sushi-overlay">
-                                    <h3>{{ featured_recipe.title }}</h3>
-                                    <p>{{ featured_recipe.description|truncatechars:60 }}</p>
-                                    <button class="view-button" id="view-recipe-sushi" data-recipe-slug="{{ featured_recipe.slug }}">Посмотреть рецепт</button>
-                                </div>
-                            </div>
-                        </div>
-                        {% else %}
-                        <!-- Заглушка, если нет рекомендуемого рецепта -->
-                        <div class="sushi-card" id="sushi-card">
-                            <div class="sushi-image-container">
-                                <img src="https://images.unsplash.com/photo-1764183122524-974ccfb709fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqYXBhbmVzZSUyMHN1c2hpJTIwcGxhdHRlcnxlbnwxfHx8fDE3NjczMzkyNTB8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Sushi Platter" class="sushi-image">
-                                <div class="gradient-overlay"></div>
-                                <div class="sushi-overlay">
-                                    <h3>Тарелка суши</h3>
-                                    <p>Искусство сервировки суши</p>
-                                    <button class="view-button" id="view-recipe-sushi">Посмотреть рецепт</button>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                    </div>
+    <!-- Footer -->
+    {% include 'includes/footer.html' %}
 
-                    <!-- New Recipes Grid -->
-                    <div class="recipes-grid">
-                        <h3>Новые рецепты</h3>
-                        <div class="grid-3" id="recipes-container">
-                            <!-- Recipes будут добавлены через JS -->
-                        </div>
-                    </div>
+    <!-- Back to Top Button -->
+    <button class="back-to-top hidden" id="back-to-top" aria-label="Наверх">
+        <i data-lucide="arrow-up" width="24" height="24"></i>
+    </button>
 
-                    <!-- By Ingredients -->
-                    <div class="ingredients-section">
-                        <h3>По ингредиентам</h3>
-                        <div class="ingredients-grid" id="ingredients-container">
-                            <!-- Ингредиенты будут добавлены через JS -->
-                        </div>
-                    </div>
-
-                    <!-- By Collections -->
-                    <div class="collections-section">
-                        <h3>По коллекциям</h3>
-                        <div class="grid-4" id="collections-container">
-                            <!-- Коллекции будут добавлены через JS -->
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Blog Section -->
-                <section class="blog-section">
-                    <h2>Последние записи блога</h2>
-                    <div class="blog-grid" id="blog-container">
-                        <!-- Блог посты будут загружены через JS из window.blogPostsData -->
-                    </div>
-                    
-                    <!-- Ссылка на все записи блога -->
-                    <div class="blog-footer" style="text-align: center; margin-top: 2rem;">
-                        <a href="{% url 'core:blog_list' %}" class="view-button" style="display: inline-block; padding: 0.75rem 2rem; text-decoration: none;">
-                            Все записи блога →
-                        </a>
-                    </div>
-                </section>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        {% include 'includes/footer.html' %}
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+            
+            // Back to top
+            const backToTop = document.getElementById('back-to-top');
+            if (backToTop) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 400) {
+                        backToTop.classList.remove('hidden');
+                    } else {
+                        backToTop.classList.add('hidden');
+                    }
+                });
+                
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
 
     <!-- Данные из Django для JavaScript -->
-    <script>
-        window.recentRecipesData = {{ recent_recipes_json|safe }};
-        window.collectionsData = {{ collections_json|safe }};
-        window.ingredientsData = {{ ingredients_json|safe }};
-        window.blogPostsData = {{ blog_posts_json|safe }};
-    </script>
+    {% block page_data %}{% endblock %}
 
     <!-- Подключаем основной JavaScript файл -->
     <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

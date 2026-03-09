@@ -1,0 +1,58 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin-editor.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin-change-form.css' %}">
+{% endblock %}
+
+{% block after_field_sets %}
+{% if original and original.image %}
+<div class="form-row field-image-preview" style="clear: both; margin: 20px 0; padding: 15px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">
+    <div>
+        <label style="display: block; font-weight: 600; color: #000000; font-family: 'Nunito', sans-serif; font-size: 14px; margin-bottom: 10px;">Текущее изображение:</label>
+        <div class="image-preview-field">
+            <img src="{{ original.image.url }}" alt="Preview">
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block after_related_objects %}
+{% if original and original.videos.exists %}
+<div class="form-row field-videos-preview">
+    <div>
+        <label>Видео:</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            {% for video in original.videos.all %}
+            <div style="width: 300px;">
+                <div style="background: var(--color-bg); padding: 10px; border-radius: 8px;">
+                    <strong>{{ video.title|default:"Видео" }}</strong>
+                    <div style="margin-top: 10px;">
+                        {{ video.get_embed_html|safe }}
+                    </div>
+                    {% if video.duration %}
+                    <div style="margin-top: 5px; font-size: 0.9em;">Длительность: {{ video.duration }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script src="{% static 'js/admin-editor.js' %}"></script>
+<script src="{% static 'js/admin-change-form.js' %}"></script>
+{% endblock %}
+
+{% block page_data %}
+<script>
+    window.collectionsList = {{ collections_json|safe }};
+</script>
+{% endblock %}

@@ -1,148 +1,218 @@
 // Состояние
-let isAccessibleMode = false;
-let displayedRecipes = 6; // Показываем первые 6 рецептов
+const state = {
+    displayedRecipes: 6,
+    filteredRecipes: [],
+    currentFilter: 'all' // Используем slug для фильтрации
+};
+
+// Кэшируем DOM элементы
+const elements = {
+    recipesGrid: document.getElementById('recipes-grid'),
+    loadMore: document.getElementById('load-more'),
+    filterTags: document.querySelectorAll('.filter-tag'),
+    backToTop: document.getElementById('back-to-top'),
+    accessibilityToggle: document.getElementById('accessibility-toggle'),
+    languageToggle: document.getElementById('language-toggle')
+};
+
+// Функция для фильтрации рецептов по коллекции
+function filterRecipesByCollection(recipes, filterSlug) {
+    console.log('Filtering by:', filterSlug);
+    console.log('All recipes:', recipes);
+    
+    if (filterSlug === 'all') {
+        console.log('Showing all recipes:', recipes.length);
+        return recipes;
+    }
+    
+    const filtered = recipes.filter(recipe => {
+        // Проверяем, есть ли у рецепта коллекции и содержит ли он нужный slug
+        const hasCollection = recipe.collections && 
+                             Array.isArray(recipe.collections) && 
+                             recipe.collections.includes(filterSlug);
+        
+        if (hasCollection) {
+            console.log(`Recipe "${recipe.title}" matches collection ${filterSlug}`);
+        }
+        
+        return hasCollection;
+    });
+    
+    console.log(`Found ${filtered.length} recipes for collection ${filterSlug}`);
+    return filtered;
+}
 
 // Функция для рендеринга рецептов
 function renderRecipes() {
-    const recipesGrid = document.getElementById('recipes-grid');
-    if (!recipesGrid) return;
+    if (!elements.recipesGrid) return;
 
-    // Используем данные из базы (window.recipesData) вместо статического allRecipes
     const recipes = window.recipesData || [];
-    const recipesToShow = recipes.slice(0, displayedRecipes);
+    console.log('Current filter:', state.currentFilter);
+    
+    state.filteredRecipes = filterRecipesByCollection(recipes, state.currentFilter);
+    const recipesToShow = state.filteredRecipes.slice(0, state.displayedRecipes);
+    
+    console.log(`Displaying ${recipesToShow.length} of ${state.filteredRecipes.length} filtered recipes`);
     
     if (recipesToShow.length === 0) {
-        recipesGrid.innerHTML = '<p class="no-recipes">Рецепты не найдены</p>';
+        elements.recipesGrid.innerHTML = '<p class="no-recipes">Рецепты не найдены</p>';
         return;
     }
     
-    recipesGrid.innerHTML = recipesToShow.map(recipe => `
-        <div class="recipe-card" data-recipe-slug="${recipe.slug}">
-            <div class="recipe-image-wrapper">
-                <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
-                <div class="recipe-category" style="background-color: var(--color-primary); color: var(--color-bg);">${recipe.category}</div>
-            </div>
-            <div class="recipe-info">
-                <h3 class="recipe-card-title">${recipe.title}</h3>
-                <div class="recipe-meta">
-                    <span>⏱ ${recipe.time}</span>
-                    <span>• ${recipe.difficulty}</span>
+    // Используем DocumentFragment для оптимизации
+    const fragment = document.createDocumentFragment();
+    const template = document.createElement('template');
+    
+    recipesToShow.forEach(recipe => {
+        template.innerHTML = `
+            <div class="recipe-card" data-recipe-slug="${recipe.slug}">
+                <div class="recipe-image-wrapper">
+                    <img src="${recipe.image}" alt="${recipe.title}" loading="lazy" class="recipe-image">
                 </div>
+                <h4>${recipe.title}</h4>
                 <button class="recipe-view-btn" data-recipe-slug="${recipe.slug}">Посмотреть рецепт →</button>
             </div>
-        </div>
-    `).join('');
+        `;
+        fragment.appendChild(template.content.firstElementChild);
+    });
     
-    // Прячем кнопку "Загрузить еще", если показаны все рецепты
-    const loadMore = document.getElementById('load-more');
-    if (loadMore) {
-        if (displayedRecipes >= recipes.length) {
-            loadMore.style.display = 'none';
-        } else {
-            loadMore.style.display = 'block';
-        }
+    elements.recipesGrid.innerHTML = '';
+    elements.recipesGrid.appendChild(fragment);
+    
+    // Обновляем видимость кнопки "Загрузить еще"
+    toggleLoadMoreButton();
+    
+    // Инициализируем Lucide иконки для новых элементов
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
     }
 }
 
-// Инициализация Lucide иконок
-if (typeof lucide !== 'undefined') {
-    lucide.createIcons();
+// Обновление кнопки "Загрузить еще"
+function toggleLoadMoreButton() {
+    if (!elements.loadMore) return;
+    const totalRecipes = state.filteredRecipes.length;
+    elements.loadMore.style.display = state.displayedRecipes >= totalRecipes ? 'none' : 'block';
 }
 
-// Обработчики событий
-document.addEventListener('DOMContentLoaded', () => {
-    // Проверяем наличие данных
-    if (!window.recipesData || window.recipesData.length === 0) {
-        console.warn('Нет данных о рецептах');
-    }
+// Обработчик скролла для кнопки "Наверх"
+function setupBackToTop() {
+    if (!elements.backToTop) return;
     
-    renderRecipes();
+    const toggleBackToTop = () => {
+        elements.backToTop.classList.toggle('hidden', window.scrollY <= 400);
+    };
+    
+    window.addEventListener('scroll', toggleBackToTop, { passive: true });
+    
+    elements.backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
-    // Back to top button
-    const backToTop = document.getElementById('back-to-top');
-    if (backToTop) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) {
-                backToTop.classList.remove('hidden');
-            } else {
-                backToTop.classList.add('hidden');
-            }
-        });
-
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
-
-    // Accessibility toggle
-    const accessibilityToggle = document.getElementById('accessibility-toggle');
-    if (accessibilityToggle) {
-        accessibilityToggle.addEventListener('click', () => {
-            isAccessibleMode = !isAccessibleMode;
-            document.body.classList.toggle('accessible-mode', isAccessibleMode);
-        });
-    }
-
-    // Language toggle
-    const languageToggle = document.getElementById('language-toggle');
-    if (languageToggle) {
-        languageToggle.addEventListener('click', () => {
-            const language = document.documentElement.lang === 'ru' ? 'en' : 'ru';
-            document.documentElement.lang = language;
-            alert(`Language switched to ${language === 'ru' ? 'Russian' : 'English'}`);
-        });
-    }
-
-    // Load more button
-    const loadMore = document.getElementById('load-more');
-    if (loadMore) {
-        loadMore.addEventListener('click', () => {
-            const recipes = window.recipesData || [];
-            if (displayedRecipes < recipes.length) {
-                displayedRecipes = Math.min(displayedRecipes + 3, recipes.length);
-                renderRecipes();
-            }
-        });
-    }
-
-    // Клик по рецепту
+// Обработчик кликов (делегирование событий)
+function setupEventDelegation() {
     document.addEventListener('click', (e) => {
+        // Клик по рецепту
         const recipeCard = e.target.closest('.recipe-card');
         const viewBtn = e.target.closest('.recipe-view-btn');
         
-    if (viewBtn || recipeCard) {
-        const recipeSlug = (viewBtn || recipeCard).dataset.recipeSlug;
-        if (recipeSlug) {
-            window.location.href = `/recipe/${recipeSlug}/`;
-        } else {
-            console.error('Recipe slug not found');
+        if (viewBtn || recipeCard) {
+            e.preventDefault();
+            const recipeSlug = (viewBtn || recipeCard).dataset.recipeSlug;
+            if (recipeSlug) {
+                window.location.href = `/recipe/${recipeSlug}/`;
+            }
+            return;
         }
-    }
-    });
-
-    // Фильтры
-    document.querySelectorAll('.filter-tag').forEach(tag => {
-        tag.addEventListener('click', function() {
+        
+        // Клик по фильтрам
+        const filterTag = e.target.closest('.filter-tag');
+        if (filterTag) {
+            e.preventDefault();
+            const filter = filterTag.dataset.filter;
+            
+            console.log('Filter clicked:', filter);
+            
+            // Обновляем активный класс
             document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
+            filterTag.classList.add('active');
             
-            const filter = this.textContent;
-            // Здесь можно добавить логику фильтрации
-            console.log('Filter by:', filter);
-            
-            // Пример фильтрации (можно раскомментировать позже)
-            // filterRecipes(filter);
-        });
+            // Применяем фильтр
+            state.currentFilter = filter;
+            state.displayedRecipes = 6; // Сбрасываем на первые 6
+            renderRecipes();
+        }
     });
-});
+}
 
-// Функция для фильтрации (можно добавить позже)
-function filterRecipes(category) {
-    if (category === 'Все рецепты') {
-        displayedRecipes = 6;
-        renderRecipes();
-    } else {
-        // Логика фильтрации по категории
-        console.log('Фильтрация по:', category);
+// Настройка кнопки "Загрузить еще"
+function setupLoadMore() {
+    if (!elements.loadMore) return;
+    
+    elements.loadMore.addEventListener('click', () => {
+        const totalRecipes = state.filteredRecipes.length;
+        if (state.displayedRecipes < totalRecipes) {
+            state.displayedRecipes = Math.min(state.displayedRecipes + 3, totalRecipes);
+            renderRecipes();
+        }
+    });
+}
+
+// Настройка accessibility режима
+function setupAccessibility() {
+    if (!elements.accessibilityToggle) return;
+    
+    elements.accessibilityToggle.addEventListener('click', () => {
+        document.body.classList.toggle('accessible-mode');
+    });
+}
+
+// Настройка переключения языка
+function setupLanguageToggle() {
+    if (!elements.languageToggle) return;
+    
+    elements.languageToggle.addEventListener('click', () => {
+        const currentLang = document.documentElement.lang;
+        const newLang = currentLang === 'ru' ? 'en' : 'ru';
+        document.documentElement.lang = newLang;
+        console.log(`Language switched to ${newLang}`);
+    });
+}
+
+// Инициализация приложения
+function init() {
+    // Проверяем наличие данных
+    if (!window.recipesData) {
+        console.warn('recipesData not found');
+        return;
     }
+    
+    console.log('Initializing recipes page with data:', window.recipesData);
+    console.log('Collections data:', window.collections);
+    
+    // Кэшируем фильтры заново (на случай, если DOM изменился)
+    elements.filterTags = document.querySelectorAll('.filter-tag');
+    
+    // Инициализируем все компоненты
+    renderRecipes();
+    setupBackToTop();
+    setupEventDelegation();
+    setupLoadMore();
+    setupAccessibility();
+    setupLanguageToggle();
+    
+    // Инициализируем Lucide иконки если есть
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
+    console.log(`Loaded ${window.recipesData.length} recipes`);
+}
+
+// Запускаем после полной загрузки DOM
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
 }

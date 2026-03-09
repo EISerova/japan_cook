@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Поиск: {{ query }} · Японская кухня{% endblock %}
+
+{% block content %}
+<div class="search-results-page">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <button class="back-button" onclick="window.location.href='/'">
+                <i data-lucide="arrow-left" width="20" height="20"></i>
+                <span>На главную</span>
+            </button>
+            <h1 class="page-title">Поиск: "{{ query }}"</h1>
+            <p class="page-description">Найдено результатов: {{ total_results }}</p>
+        </div>
+
+        <!-- Search Form -->
+        <div class="search-wrapper" style="max-width: 600px; margin: 0 auto 3rem;">
+            <form method="get" action="{% url 'core:search' %}" id="search-form">
+                <input type="text" 
+                    name="q" 
+                    class="search-input" 
+                    placeholder="Поиск рецептов, статей..." 
+                    value="{{ query }}"
+                    id="search-input"
+                    autocomplete="off">
+                <button type="submit" class="search-icon" style="background: none; border: none; cursor: pointer;">
+                    <i data-lucide="search" width="20" height="20"></i>
+                </button>
+            </form>
+        </div>
+
+        <script>
+        // Debounce функция для оптимизации поиска
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Автоматический поиск при вводе (опционально)
+            const searchInput = document.getElementById('search-input');
+            const searchForm = document.getElementById('search-form');
+            
+            if (searchInput && searchForm) {
+                searchInput.addEventListener('input', debounce(function() {
+                    if (this.value.length >= 2 || this.value.length === 0) {
+                        searchForm.submit();
+                    }
+                }, 500));
+            }
+        </script>
+
+        <div class="filter-tags" style="justify-content: center; margin-bottom: 2rem;">
+    <a href="?q={{ query }}&type=all" class="filter-tag {% if selected_type == 'all' %}active{% endif %}">
+        Все
+    </a>
+    <a href="?q={{ query }}&type=recipes" class="filter-tag {% if selected_type == 'recipes' %}active{% endif %}">
+        Рецепты ({{ counts.recipes }})
+    </a>
+    <a href="?q={{ query }}&type=blog" class="filter-tag {% if selected_type == 'blog' %}active{% endif %}">
+        Блог ({{ counts.blog }})
+    </a>
+    <a href="?q={{ query }}&type=inspiration" class="filter-tag {% if selected_type == 'inspiration' %}active{% endif %}">
+        Вдохновение ({{ counts.inspiration }})
+    </a>
+</div>
+
+<!-- Results -->
+{% if results %}
+    {% if selected_type == 'all' %}
+        <!-- Показываем все результаты -->
+        {% if results.recipes %}
+        <div class="results-section" style="margin-bottom: 3rem;">
+            <h2 class="section-title">Рецепты</h2>
+            <div class="recipes-grid grid-3">
+                {% for recipe in results.recipes %}
+                <div class="recipe-card" onclick="window.location.href='{% url 'core:recipe_detail' recipe.slug %}'">
+                    <div class="recipe-image-container">
+                        <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}{{ recipe.image_url }}{% endif %}" alt="{{ recipe.title }}" class="recipe-image">
+                    </div>
+                    <h4>{{ recipe.title }}</h4>
+                    <button class="recipe-link">Посмотреть рецепт →</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if results.blog %}
+        <div class="results-section" style="margin-bottom: 3rem;">
+            <h2 class="section-title">Блог</h2>
+            <div class="blog-grid grid-2">
+                {% for post in results.blog %}
+                <div class="blog-card" onclick="window.location.href='{% url 'core:blog_detail' post.slug %}'">
+                    <div class="blog-image-container">
+                        <img src="{{ post.get_image }}" alt="{{ post.title }}" class="blog-image">
+                    </div>
+                    <div class="blog-content">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.description|truncatechars:100 }}</p>
+                        <span class="blog-link">Читать далее →</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if results.inspiration %}
+        <div class="results-section" style="margin-bottom: 3rem;">
+            <h2 class="section-title">Вдохновение</h2>
+            <div class="inspiration-grid">
+                {% for item in results.inspiration %}
+                <div class="inspiration-card" onclick="window.location.href='{% url 'core:inspiration_detail' item.slug %}'">
+                    <div class="inspiration-image-container">
+                        <img src="{{ item.get_image }}" alt="{{ item.title }}" class="inspiration-image">
+                    </div>
+                    <div class="inspiration-content">
+                        <h3>{{ item.title }}</h3>
+                        <p class="inspiration-description">{{ item.description|truncatechars:150 }}</p>
+                        <span class="inspiration-link">Читать далее →</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+    {% elif selected_type == 'recipes' %}
+        <!-- Показываем только рецепты -->
+        {% if results.recipes %}
+        <div class="recipes-grid grid-3">
+            {% for recipe in results.recipes %}
+            <div class="recipe-card" onclick="window.location.href='{% url 'core:recipe_detail' recipe.slug %}'">
+                <div class="recipe-image-container">
+                    <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}{{ recipe.image_url }}{% endif %}" alt="{{ recipe.title }}" class="recipe-image">
+                </div>
+                <h4>{{ recipe.title }}</h4>
+                <button class="recipe-link">Посмотреть рецепт →</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results" style="text-align: center; padding: 4rem;">
+            <i data-lucide="search-x" width="64" height="64" style="opacity: 0.5; margin-bottom: 1rem;"></i>
+            <h3>Рецепты не найдены</h3>
+        </div>
+        {% endif %}
+        
+    {% elif selected_type == 'blog' %}
+        <!-- Показываем только блог -->
+        {% if results.blog %}
+        <div class="blog-grid grid-2">
+            {% for post in results.blog %}
+            <div class="blog-card" onclick="window.location.href='{% url 'core:blog_detail' post.slug %}'">
+                <div class="blog-image-container">
+                    <img src="{{ post.get_image }}" alt="{{ post.title }}" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.description|truncatechars:100 }}</p>
+                    <span class="blog-link">Читать далее →</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results" style="text-align: center; padding: 4rem;">
+            <i data-lucide="search-x" width="64" height="64" style="opacity: 0.5; margin-bottom: 1rem;"></i>
+            <h3>Статьи не найдены</h3>
+        </div>
+        {% endif %}
+        
+    {% elif selected_type == 'inspiration' %}
+        <!-- Показываем только вдохновение -->
+        {% if results.inspiration %}
+        <div class="inspiration-grid">
+            {% for item in results.inspiration %}
+            <div class="inspiration-card" onclick="window.location.href='{% url 'core:inspiration_detail' item.slug %}'">
+                <div class="inspiration-image-container">
+                    <img src="{{ item.get_image }}" alt="{{ item.title }}" class="inspiration-image">
+                </div>
+                <div class="inspiration-content">
+                    <h3>{{ item.title }}</h3>
+                    <p class="inspiration-description">{{ item.description|truncatechars:150 }}</p>
+                    <span class="inspiration-link">Читать далее →</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results" style="text-align: center; padding: 4rem;">
+            <i data-lucide="search-x" width="64" height="64" style="opacity: 0.5; margin-bottom: 1rem;"></i>
+            <h3>Вдохновение не найдено</h3>
+        </div>
+        {% endif %}
+    {% endif %}
+    
+    {% else %}
+        <div class="no-results" style="text-align: center; padding: 4rem;">
+            <i data-lucide="search-x" width="64" height="64" style="opacity: 0.5; margin-bottom: 1rem;"></i>
+            <h3>Ничего не найдено</h3>
+            <p>Попробуйте изменить поисковый запрос</p>
+        </div>
+    {% endif %}
+
+    {% if paginator and page_obj %}
+    <div class="pagination" style="text-align: center; margin-top: 3rem;">
+        {% if page_obj.has_previous %}
+            <a href="?q={{ query }}&type={{ selected_type }}&page={{ page_obj.previous_page_number }}" 
+            class="filter-tag">← Предыдущая</a>
+        {% endif %}
+        
+        <span class="filter-tag active" style="cursor: default;">
+            Страница {{ page_obj.number }} из {{ paginator.num_pages }}
+        </span>
+        
+        {% if page_obj.has_next %}
+            <a href="?q={{ query }}&type={{ selected_type }}&page={{ page_obj.next_page_number }}" 
+            class="filter-tag">Следующая →</a>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    </div>
+</div>
+
+<style>
+    .section-title {
+        font-family: 'Comfortaa', cursive;
+        font-size: 1.8rem;
+        color: var(--color-text);
+        margin-bottom: 1.5rem;
+    }
+    
+    .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

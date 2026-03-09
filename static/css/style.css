@@ -81,6 +81,9 @@ p {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     width: 146px;
     height: 69px;
 }
@@ -1438,5 +1441,283 @@ body.accessible-mode button {
     
     .recipes-grid .recipe-card h4 {
         min-height: auto;
+    }
+}
+
+/* Стили для ссылок логотипа и заголовка */
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.site-title-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    margin: 0;
+}
+
+/* Убедитесь, что header-content использует flexbox для центрирования */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Центрирование заголовка */
+.site-title-link {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Стили для ссылки "Читать далее" в блоке вдохновения - как в блоге */
+.inspiration-link {
+    background: none;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.875rem;
+    color: var(--color-bg); /* Белый цвет на коричневом фоне */
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.inspiration-link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+    gap: 8px;
+    background: none; /* Убираем фоновую подсветку */
+}
+
+/* Выравнивание текста в блоке featured-text */
+.featured-text > div {
+    width: 100%;
+}
+
+.featured-text h2,
+.featured-text p,
+.featured-text .inspiration-link {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+/* Стили для видео */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 соотношение */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #000;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Для нескольких видео */
+.video-section .video-container:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+/* ========== ЕДИНЫЙ РАЗМЕР ДЛЯ ВСЕХ ИЗОБРАЖЕНИЙ РЕЦЕПТОВ ========== */
+
+/* Для главной страницы - новые рецепты */
+.recipes-grid .recipe-image-container img,
+.recipes-grid .recipe-image-wrapper img,
+.recipe-image-container img,
+.recipe-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Для детальной страницы рецепта */
+.recipe-main-image img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+/* Для карточек в списке рецептов */
+.recipes-grid .recipe-card .recipe-image-wrapper {
+    height: 200px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.recipes-grid .recipe-card .recipe-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Для карточек в коллекциях */
+.collection-image-container {
+    height: 186px;
+    overflow: hidden;
+}
+
+.collection-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Для карточек блога */
+.blog-image-container {
+    height: 240px;
+    overflow: hidden;
+}
+
+.blog-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Для карточек вдохновения */
+.inspiration-image-container {
+    height: 500px;
+    overflow: hidden;
+}
+
+.inspiration-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Для видео-карточек */
+.video-image-container {
+    height: 280px;
+    overflow: hidden;
+}
+
+.video-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========== МОБИЛЬНАЯ ВЕРСИЯ ========== */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    /* Фикс для хедера */
+    .top-header .header-content {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
+        position: relative;
+    }
+    
+    /* Логотип слева */
+    .logo-link {
+        flex: 0 0 auto;
+        margin-right: 0;
+    }
+    
+    .logo {
+        width: 80px;
+        height: auto;
+    }
+    
+    .logo img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Заголовок - уменьшаем и центрируем */
+    .site-title-link {
+        position: static;
+        transform: none;
+        flex: 1 1 auto;
+        text-align: center;
+        margin: 0 10px;
+    }
+    
+    .site-title {
+        font-size: 1.2rem;
+        white-space: normal;
+        line-height: 1.2;
+    }
+    
+    /* Соцсети и О нас справа */
+    .header-actions {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: 0;
+    }
+    
+    .about-link {
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+    
+    /* Скрываем иконки соцсетей в верхней части, если они там есть */
+    .top-header .social-icons {
+        display: none;
+    }
+    
+    /* Навигация */
+    .sticky-nav {
+        position: relative;
+    }
+    
+    .nav-content {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+    }
+    
+    .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    .nav-link {
+        font-size: 1rem;
+        padding: 0.5rem;
+    }
+    
+    /* Соцсети в нижней навигации */
+    .social-icons {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .social-icon {
+        width: 28px;
+        height: 28px;
     }
 }

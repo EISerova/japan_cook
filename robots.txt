@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /video/
+Disallow: /search/
+Disallow: /?q=*
+Allow: /
+
+Sitemap: https://japan-cook.ru/sitemap.xml

@@ -4,12 +4,12 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# === БЕЗОПАСНОСТЬ ===
 SECRET_KEY = config('SECRET_KEY')
-
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
+# === ПРИЛОЖЕНИЯ ===
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'core',
 ]
 
@@ -32,25 +33,24 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'japan_cook.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
+# === ШАБЛОНЫ ===
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [BASE_DIR / 'templates'],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'context_processors': [
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+        ],
     },
-]
+}]
 
 WSGI_APPLICATION = 'japan_cook.wsgi.application'
 
-# Настройки PostgreSQL из переменных окружения
+# === БАЗА ДАННЫХ ===
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -62,33 +62,31 @@ DATABASES = {
     }
 }
 
+# === ВАЛИДАЦИЯ ПАРОЛЕЙ ===
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': f'django.contrib.auth.password_validation.{name}'}
+    for name in [
+        'UserAttributeSimilarityValidator',
+        'MinimumLengthValidator',
+        'CommonPasswordValidator',
+        'NumericPasswordValidator',
+    ]
 ]
 
+# === ЛОКАЛИЗАЦИЯ ===
 LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# === СТАТИЧЕСКИЕ ФАЙЛЫ ===
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# === МЕДИА ФАЙЛЫ ===
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
+# === ПОЛЯ ПО УМОЛЧАНИЮ ===
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

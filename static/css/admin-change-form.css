@@ -1,0 +1,404 @@
+/* Основной контейнер */
+#content {
+    background: white;
+    padding: 20px;
+}
+
+/* Заголовки секций */
+fieldset.module h2 {
+    background: var(--color-primary);
+    color: white;
+    padding: 12px 15px;
+    margin: 0 0 20px 0;
+    border-radius: 8px;
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.2em;
+    font-weight: 600;
+    border: none;
+}
+
+/* Основные поля формы */
+.aligned .form-row {
+    padding: 0;
+    margin-bottom: 20px;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    clear: both;
+    overflow: hidden;
+}
+
+.aligned .form-row label {
+    width: 200px;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    float: left;
+    line-height: 38px;
+}
+
+.aligned .form-row input[type="text"],
+.aligned .form-row input[type="url"],
+.aligned .form-row input[type="number"],
+.aligned .form-row textarea,
+.aligned .form-row select {
+    width: 70%;
+    max-width: 600px;
+    padding: 8px 12px;
+    border: 2px solid var(--color-text-dark);
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: var(--color-text-dark);
+    background: white;
+    float: left;
+}
+
+.aligned .form-row input[type="file"] {
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: var(--color-text-dark);
+    float: left;
+    width: auto;
+    min-width: 300px;
+    margin-left: 0;
+}
+
+.aligned .form-row .file-upload,
+.aligned .form-row .help {
+    float: left;
+    clear: left;
+    margin-left: 200px;
+    padding: 4px 0;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: #666;
+    font-style: normal;
+}
+
+.aligned .form-row textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Параметры приготовления - одна строка */
+.form-row.field-cooking_time,
+.form-row.field-servings,
+.form-row.field-difficulty {
+    display: inline-block !important;
+    width: auto !important;
+    margin-right: 20px !important;
+    vertical-align: top !important;
+}
+
+.form-row.field-cooking_time .flex-container,
+.form-row.field-servings .flex-container,
+.form-row.field-difficulty .flex-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    white-space: nowrap !important;
+}
+
+.form-row.field-cooking_time label,
+.form-row.field-servings label,
+.form-row.field-difficulty label {
+    width: auto !important;
+    min-width: 130px !important;
+    margin: 0 !important;
+    float: none !important;
+    line-height: normal !important;
+    font-size: 14px !important;
+    color: var(--color-text-dark) !important;
+}
+
+.form-row.field-cooking_time input,
+.form-row.field-servings input,
+.form-row.field-difficulty select {
+    width: 120px !important;
+    margin: 0 !important;
+}
+
+.field-difficulty select {
+    width: 140px !important;
+    height: 38px !important; 
+}
+
+/* Блок публикации в одну строку */
+.form-row.field-is_featured,
+.form-row.field-is_published {
+    display: inline-block !important;
+    width: auto !important;
+    margin-right: 30px !important;
+    vertical-align: top !important;
+}
+
+.form-row.field-is_featured .flex-container,
+.form-row.field-is_published .flex-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    white-space: nowrap !important;
+}
+
+.form-row.field-is_featured label,
+.form-row.field-is_published label {
+    width: auto !important;
+    margin: 0 !important;
+    float: none !important;
+    line-height: normal !important;
+    font-size: 14px !important;
+    color: var(--color-text-dark) !important;
+}
+
+.form-row.field-is_featured input,
+.form-row.field-is_published input {
+    width: auto !important;
+    margin: 0 !important;
+}
+
+.form-row.field-is_featured .help {
+    display: none !important;
+}
+
+/* Кнопки */
+.submit-row {
+    background: white;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    text-align: right;
+    clear: both;
+}
+
+.submit-row input[type="submit"] {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.submit-row input[type="submit"]:hover {
+    background: var(--color-hover);
+}
+
+.submit-row .deletelink {
+    background: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    float: left;
+}
+
+.submit-row .deletelink:hover {
+    background: #c82333;
+}
+
+/* Изображения */
+.image-preview-field {
+    max-width: 200px;
+    max-height: 150px;
+    margin: 10px 0;
+    border-radius: 4px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.image-preview-field img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Поля */
+input[type="url"] {
+    width: 100%;
+    max-width: 600px;
+}
+
+.field-duration input {
+    width: 100px;
+}
+
+/* Коллекции */
+.field-collections .selector,
+.field-collections .addlink,
+.field-collections .add-another,
+.field-collections .help,
+.field-collections p,
+img[src*="icon-addlink.svg"] {
+    display: none !important;
+}
+
+.collections-button-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+    max-width: 800px;
+}
+
+.collection-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background: white;
+    border: 2px solid var(--color-border);
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.collection-button:hover {
+    border-color: var(--color-primary);
+    background: #f8f9fa;
+}
+
+.collection-button.selected {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+.add-collection-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-left: auto;
+    width: auto;
+    height: auto;
+    background: transparent;
+    border: none;
+}
+
+.add-collection-link:hover {
+    color: var(--color-hover);
+    transform: scale(1.1);
+}
+
+.custom-image-block .preview-image {
+    max-width: 200px;
+    max-height: 150px;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    padding: 5px;
+    background: white;
+    margin-bottom: 15px;
+}
+
+.custom-image-block .file-input {
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Для чекбоксов */
+.field-is_main, 
+.field-is_published, 
+.field-is_featured {
+    padding: 10px 0;
+}
+
+.field-is_main label, 
+.field-is_published label, 
+.field-is_featured label {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .aligned .form-row label {
+        width: 100%;
+        float: none;
+        line-height: normal;
+        margin-bottom: 5px;
+    }
+
+    .aligned .form-row input[type="text"],
+    .aligned .form-row input[type="url"],
+    .aligned .form-row input[type="number"],
+    .aligned .form-row textarea,
+    .aligned .form-row select,
+    .aligned .form-row input[type="file"] {
+        width: 100%;
+        float: none;
+        margin-left: 0;
+    }
+
+    .aligned .form-row .file-upload {
+        margin-left: 0;
+    }
+
+    .form-row.field-cooking_time,
+    .form-row.field-servings,
+    .form-row.field-difficulty {
+        display: block !important;
+        width: 100% !important;
+        margin-right: 0 !important;
+        margin-bottom: 15px !important;
+    }
+
+    .form-row.field-is_featured,
+    .form-row.field-is_published {
+        display: block !important;
+        width: 100% !important;
+        margin-right: 0 !important;
+        margin-bottom: 15px !important;
+    }
+
+    .field-collections .selector {
+        margin-left: 0;
+    }
+}
+/* Сдвигаем весь блок главного фото влево */
+.field-image .flex-container {
+    margin-left: 10 !important;
+}
+
+.field-image .flex-container label {
+    width: auto !important;
+    min-width: 120px !important;
+}
+
+.field-image .flex-container a {
+    margin-left: 10 !important;
+    display: inline-block;
+}
+
+/* Принудительный сдвиг влево */
+.field-image .flex-container,
+.field-image .flex-container * {
+    margin-left: 18 !important;
+    padding-left: 18 !important;
+}
+
+.field-image .flex-container {
+    float: left !important;
+    width: 100% !important;
+}

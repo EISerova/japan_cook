@@ -149,7 +149,7 @@
 
 /* Стили для ссылки "Читать далее" (как в карточках рецептов) */
 .blog-link {
-    margin: 0 1rem 1rem 1rem;
+    margin: 0.5rem 0 0 0; 
     background: none;
     border: none;
     font-family: 'Nunito', sans-serif;

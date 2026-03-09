@@ -1,88 +1,47 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вдохновение · Японская культура</title>
 
-    <!-- Шрифты -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide иконки (CDN) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Наши статические файлы -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/inspiration.css' %}">
-</head>
-<body>
-    <!-- Header -->
-    {% include 'includes/header.html' %}
+{% block title %}Вдохновение Японией · Эстетика, традиции, культура{% endblock %}
 
-    <!-- Main Content -->
-    <main class="inspiration-page">
-        <div class="inspiration-container">
-            <!-- Page Header -->
-            <div class="inspiration-header">
-                <button class="back-button" onclick="window.location.href='/'">
-                    <i data-lucide="arrow-left" width="20" height="20"></i>
-                    <span>На главную</span>
-                </button>
-                <h1 class="page-title">Вдохновение</h1>
-                <p class="page-description">Красота японской культуры в фотографиях</p>
-            </div>
+{% block meta_description %}
+Красота японской культуры в фотографиях: традиционная посуда, сервировка, 
+ингредиенты и атмосфера настоящей японской кухни.
+{% endblock %}
 
-            <!-- Inspiration Grid -->
-            <div class="inspiration-grid" id="inspiration-grid">
-                {% for item in inspirations %}
-                <div class="inspiration-card" onclick="window.location.href='{% url 'core:inspiration_detail' item.slug %}'">
-                    <div class="inspiration-image-container">
-                        <img src="{{ item.get_image }}" alt="{{ item.title }}" class="inspiration-image">
-                    </div>
-                    <div class="inspiration-content">
-                        <h3>{{ item.title }}</h3>
-                        <p class="inspiration-description">{{ item.description|truncatechars:150 }}</p>
-                        <button class="inspiration-link" data-slug="{{ item.slug }}">
-                            Читать далее →
-                        </button>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/inspiration.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="inspiration-page">
+    <div class="inspiration-container">
+        <!-- Page Header -->
+        <div class="inspiration-header">
+            <button class="back-button" onclick="window.location.href='/'">
+                <i data-lucide="arrow-left" width="20" height="20"></i>
+                <span>На главную</span>
+            </button>
+            <h1 class="page-title">Вдохновение</h1>
+            <p class="page-description">Красота японской культуры в фотографиях</p>
         </div>
-    </main>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="back-to-top" aria-label="Наверх">
-        <i data-lucide="arrow-up" width="24" height="24"></i>
-    </button>
-
-    <!-- Footer -->
-    {% include 'includes/footer.html' %}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-            
-            // Back to top
-            const backToTop = document.getElementById('back-to-top');
-            if (backToTop) {
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 400) {
-                        backToTop.classList.remove('hidden');
-                    } else {
-                        backToTop.classList.add('hidden');
-                    }
-                });
-                
-                backToTop.addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+        <!-- Inspiration Grid -->
+        <div class="inspiration-grid" id="inspiration-grid">
+            {% for item in inspirations %}
+            <div class="inspiration-card" onclick="window.location.href='{% url 'core:inspiration_detail' item.slug %}'">
+                <div class="inspiration-image-container">
+                    <img src="{{ item.get_image }}" alt="{{ item.title }}" class="inspiration-image">
+                </div>
+                <div class="inspiration-content">
+                    <h3>{{ item.title }}</h3>
+                    <p class="inspiration-description">{{ item.description|truncatechars:150 }}</p>
+                    <button class="inspiration-link" data-slug="{{ item.slug }}">
+                        Читать далее →
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
