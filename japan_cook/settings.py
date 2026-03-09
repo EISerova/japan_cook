@@ -7,7 +7,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # === БЕЗОПАСНОСТЬ ===
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'japan-cook.ru',
+    'www.japan-cook.ru',
+    'amvera-katrin-run-japan-cook',
+    'localhost',
+    '127.0.0.1',
+]
 
 # === ПРИЛОЖЕНИЯ ===
 INSTALLED_APPS = [
@@ -84,9 +90,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = '/data/media'
 
 # === МЕДИА ФАЙЛЫ ===
 MEDIA_URL = '/media/'
