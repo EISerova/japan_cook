@@ -2,12 +2,13 @@ meta:
   environment: python
   toolchain:
     name: pip
-    version: 3.12  # Укажите вашу версию Python (3.10, 3.11, 3.12)
-
+    version: latest
 build:
-  requirementsPath: requirements.txt  # Путь к вашему файлу с зависимостями
-
+  requirementsPath: requirements.txt
+  useCache: true
 run:
+  scriptName: null
   command: gunicorn japan_cook.wsgi:application --bind 0.0.0.0:8000
+  persistenceMount: /data
   containerPort: 8000
-  persistenceMount: /data  # Эта папка будет постоянной, идеально для MEDIA_ROOT [citation:2]
+  servicePort: "80"
